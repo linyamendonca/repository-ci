@@ -64,4 +64,4 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: SEU-USUARIO-DOCKERHUB/exemplo-actions:latest
+          tags: linyaalves/exemplo-actions:latest
