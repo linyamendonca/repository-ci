@@ -1,5 +1,4 @@
-
-FROM maven:3-openjdk-17 as builder
+FROM maven:3-openjdk-21 as builder
 LABEL authors="linyaalves"
 WORKDIR /build
 COPY . .
