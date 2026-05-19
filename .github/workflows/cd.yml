@@ -33,7 +33,7 @@ jobs:
           docker run -d \
             --name actions-app \
             -p 8080:8080 \
-            ${{ secrets.DOCKER_HUB_USER }}/repositorio-ci:latest
+            ${{ secrets.DOCKER_HUB_USER }}/repository-ci:latest
 
       - name: Wait for application to start
         run: sleep 10
