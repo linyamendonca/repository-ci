@@ -20,7 +20,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASS }}
 
       - name: Pull latest Docker image
-        run: docker pull ${{ secrets.DOCKER_HUB_USER }}/repositorio-ci:latest
+        run: docker pull ${{ secrets.DOCKER_HUB_USER }}/repository-ci:latest
 
       - name: Stop running container
         run: docker stop actions-app || true
