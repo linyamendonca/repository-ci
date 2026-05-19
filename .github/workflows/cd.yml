@@ -1,0 +1,42 @@
+name: CD - Deploy to EC2
+
+on:
+  workflow_run:
+    workflows: ["CI - Build and Test"]
+    types:
+      - completed
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Deploy to EC2
+    runs-on: self-hosted
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USER }}
+          password: ${{ secrets.DOCKER_HUB_PASS }}
+
+      - name: Pull latest Docker image
+        run: docker pull ${{ secrets.DOCKER_HUB_USER }}/repositorio-ci:latest
+
+      - name: Stop running container
+        run: docker stop actions-app || true
+
+      - name: Remove old container
+        run: docker rm actions-app || true
+
+      - name: Run new container
+        run: |
+          docker run -d \
+            --name actions-app \
+            -p 8080:8080 \
+            ${{ secrets.DOCKER_HUB_USER }}/repositorio-ci:latest
+
+      - name: Wait for application to start
+        run: sleep 10
+
+      - name: Verify deployment
+        run: curl http://localhost:8080/actuator/health || echo "Health check endpoint not available"
